@@ -4,8 +4,9 @@ cache: pip
 python:
 - 3.6
 script:
+- echo "$VIRTUAL_ENV"
 - pipenv install
-- ls $(pipenv --venv)/lib/python3.6/site-packages
+- ls $(pipenv --bare --venv)/lib/python3.6/site-packages
 deploy:
 - provider: lambda
   function_name: uno-usage-scraper
