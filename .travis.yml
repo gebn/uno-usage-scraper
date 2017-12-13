@@ -1,0 +1,51 @@
+sudo: false
+language: python
+cache: pip
+python:
+- 3.6
+script:
+- "./create_deployment_pkg"
+deploy:
+- provider: lambda
+  function_name: uno-usage-scraper
+  description: Retrieves and stores hourly usage data for an uno
+    Communications Ltd. account.
+  region: eu-west-1
+  role: arn:aws:iam::158438328645:role/uno-usage-scraper-role
+  runtime: python3.6
+  module_name: main
+  handler_name: lambda_handler
+  zip: "/dev/shm/deploy.zip"
+  timeout: 10
+  memory_size: 128
+  on:
+    branch: latest
+  secret_access_key:
+    secure: RQFaSEKIbEfK0nu4bErg1RH+8lx2yRlIgreqA14PIv2o66JRm/X7Sx5JyV862tHjW+EeKBuWKG04PXC5ypoCXoO9AYitMZSuVbzvA/Xb3fC02KDt/X8oLw2t8wXszF7/FwmmiWMpsG5sq/15gw3ylE1n9DRnBypQaHnGgsfmhpAbYo4xgMvfH9ndDtPovPRKYkKVFzYZSGxg976zCrpfLNytFqFsjm40qSJcBVc3mrMmWWc9FcXv9E1oJQzsdSit8VaRvs5Lofc06oEF8OtxC0q0lM8jTydzLGZCYnWF84IdWiyEtpjgn/s0GwK0T5rjMueyFaRpyPUa0J/LoWo2cSpY2w9wWEu0YTg1K7dl2UDw5/x+hOE1ls1i0cYIxsTz15fTvtMWUPTmY4Io0MXK4eA7oipCP7YQ5FyuviISnE/yXqW+6olV6KBWbphCzBHxUqyyemmKC6Ej0i3f6hDFDQu9i2Y9fOFNieVSKyBXaLg1cgyKZMFL2GGV34DyeRxPORA64dtFmbxEXghJUrMd7YALF4jhjMPkmxP/uGVdjs7s+sDJxSpnqZDcsiQFD1kF2v7wyZC6gpHrKmRNVfO2MTT9i3eokkG+h4kJhl3aZwdXKG05EImFpRb2Y6ghe2GA6/MR+ZQfl59LUOMnf9EXf+dq7rKiQmPRfhQ/RcEvJLM=
+  access_key_id:
+    secure: CliRZ9XsmXVwDv/UZZMbBzYK6BIqQvD0i5MOGCI8b/JL8r7kzEB3hajDwB4P50NCwE7YYXZq2cXvyUcn23lfGnrY5Y26GI7Y4gzokE2BO779qbXQh+tCV29oUNE+BbY+UWnS3vZ5n18tgj5HWRh1Uudpw/mvJJun5fZ0KcP7+/+sg09sfrdQXvh5+n2rVMu8qH4VPF2NscbpxavRiBQo8er7fPyN/z+8QMFhaJlGr5WBifOUNOhvIsAmHT7CoNQL4wHRULtmPVl3ethOpIdaa5ESbuYG514o++Qct7j1yfAZ9bAHmlFFqVlM7vAeAwQvFUkh3WqAUYEliGQ2B0cZDAsv96rQ37K/dO4HVzHgRlV3SXwfPkNrroe57G+Ahu0jt9+D1VfwaduLtb+jX63Lr60ZSG6YqZrtjkV+x068PTzp+uEnyG1bQ/SEonB7poO2CXetbHP/otc73llzrWrhRGHE4i7b5BPHRT3WwZVJcfL1RD2pPk7ezRIfDrEmqTj105A7AGqN9u90jkUE3XaW4GiZkXqLEjdzAdM6KfV6mwAxFJdV2k2Ya4+xSMKsThW9zMBg85bBV+AhaYG9uAqxB6OwXS7X+sJSXdzW9346NCIGeyDCcB3qwvwrt4jZJB2IgRme21gNTWbFZYU8YQcWewbP+F9M3alMMU8Z+gRZqPM=
+- provider: lambda
+  function_name: uno-usage-scraper
+  description: Retrieves and stores hourly usage data for an uno
+    Communications Ltd. account.
+  region: eu-west-1
+  role: arn:aws:iam::158438328645:role/uno-usage-scraper-role
+  runtime: python3.6
+  module_name: main
+  handler_name: lambda_handler
+  zip: "/dev/shm/deploy.zip"
+  timeout: 10
+  memory_size: 128
+  publish: true
+  on:
+    tags: true
+  secret_access_key:
+    secure: RQFaSEKIbEfK0nu4bErg1RH+8lx2yRlIgreqA14PIv2o66JRm/X7Sx5JyV862tHjW+EeKBuWKG04PXC5ypoCXoO9AYitMZSuVbzvA/Xb3fC02KDt/X8oLw2t8wXszF7/FwmmiWMpsG5sq/15gw3ylE1n9DRnBypQaHnGgsfmhpAbYo4xgMvfH9ndDtPovPRKYkKVFzYZSGxg976zCrpfLNytFqFsjm40qSJcBVc3mrMmWWc9FcXv9E1oJQzsdSit8VaRvs5Lofc06oEF8OtxC0q0lM8jTydzLGZCYnWF84IdWiyEtpjgn/s0GwK0T5rjMueyFaRpyPUa0J/LoWo2cSpY2w9wWEu0YTg1K7dl2UDw5/x+hOE1ls1i0cYIxsTz15fTvtMWUPTmY4Io0MXK4eA7oipCP7YQ5FyuviISnE/yXqW+6olV6KBWbphCzBHxUqyyemmKC6Ej0i3f6hDFDQu9i2Y9fOFNieVSKyBXaLg1cgyKZMFL2GGV34DyeRxPORA64dtFmbxEXghJUrMd7YALF4jhjMPkmxP/uGVdjs7s+sDJxSpnqZDcsiQFD1kF2v7wyZC6gpHrKmRNVfO2MTT9i3eokkG+h4kJhl3aZwdXKG05EImFpRb2Y6ghe2GA6/MR+ZQfl59LUOMnf9EXf+dq7rKiQmPRfhQ/RcEvJLM=
+  access_key_id:
+    secure: CliRZ9XsmXVwDv/UZZMbBzYK6BIqQvD0i5MOGCI8b/JL8r7kzEB3hajDwB4P50NCwE7YYXZq2cXvyUcn23lfGnrY5Y26GI7Y4gzokE2BO779qbXQh+tCV29oUNE+BbY+UWnS3vZ5n18tgj5HWRh1Uudpw/mvJJun5fZ0KcP7+/+sg09sfrdQXvh5+n2rVMu8qH4VPF2NscbpxavRiBQo8er7fPyN/z+8QMFhaJlGr5WBifOUNOhvIsAmHT7CoNQL4wHRULtmPVl3ethOpIdaa5ESbuYG514o++Qct7j1yfAZ9bAHmlFFqVlM7vAeAwQvFUkh3WqAUYEliGQ2B0cZDAsv96rQ37K/dO4HVzHgRlV3SXwfPkNrroe57G+Ahu0jt9+D1VfwaduLtb+jX63Lr60ZSG6YqZrtjkV+x068PTzp+uEnyG1bQ/SEonB7poO2CXetbHP/otc73llzrWrhRGHE4i7b5BPHRT3WwZVJcfL1RD2pPk7ezRIfDrEmqTj105A7AGqN9u90jkUE3XaW4GiZkXqLEjdzAdM6KfV6mwAxFJdV2k2Ya4+xSMKsThW9zMBg85bBV+AhaYG9uAqxB6OwXS7X+sJSXdzW9346NCIGeyDCcB3qwvwrt4jZJB2IgRme21gNTWbFZYU8YQcWewbP+F9M3alMMU8Z+gRZqPM=
+- provider: releases
+  api_key:
+    secure: AcTXAJZavsjYzkYAu6GuMOTGPI9HreLCmnAAlrvK7Lbc0DpdR/4mmpwqhuZKHRL3f2MKpdD/nl60fytsLg43IlJo37baf8UK6MJIeYPczBlV3O/Uj+Tt+XWi0vZntuhTzw5e0hB8BsRYJY4e2hgZpO+0WIFIp1tubDZr9QEkYUCU0l+PoInId9G+CxAs/fLte3Ns2OW6lNMn8n/6vpihYFtIh8DaHpcKawoVXGeLE9/+iPktpw9EeGoy3R+gTB+a2PzKNkyivx3D4+Gat3e2aXFN0WnOqIEio4N47yTruEJmgKHxo31Trs1HsKO6zQbtASTqe0uC1VRcFZOpn8RWKpHIh2T5iD/Tv9f5myYPuwYHdH7a+nfRLQqacEaICv2xgRQR+evKq02sXa+ETTWpUmE3PWFK63WydsEqEbZlc91oOheTmdD/hnfUR6XKT3eqFA1ZAhlmDgGvAwx7vSYV1PE35Bb0n5EoofjjpH+DfISQrKcCNyZlZSOc+wbOL0n5Uejd1xspLN1YkWeYqipo+ggV8hm/tum8r5ttD63Pfe5/DelrJGLzMGUPzCPqDPuw0E77TrbPmzLTgPdk3XqHX8fhvaQZFYfiqYZ/ZPM/kL4AtlCuWWu6ZL9pkmsjthOkbr9d9TaFr4d3lNTfayLoe9sXEd3zxM7lpqpo6Q5XLo8=
+  file: "/dev/shm/deploy.zip"
+  on:
+    repo: gebn/uno-usage-scraper
