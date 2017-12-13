@@ -5,6 +5,7 @@ python:
 - 3.6
 script:
 - echo "$VIRTUAL_ENV"
+- pipenv --bare --venv
 - pipenv install
 - ls $(pipenv --bare --venv)/lib/python3.6/site-packages
 deploy:
