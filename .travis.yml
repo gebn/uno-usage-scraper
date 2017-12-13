@@ -4,12 +4,8 @@ cache: pip
 python:
 - 3.6
 script:
-- mkdir -p $HOME/.local/venvs/pipsi/bin/pip
-- curl https://raw.githubusercontent.com/mitsuhiko/pipsi/master/get-pipsi.py | python
-- export PATH=$HOME/.local/bin:$PATH
-- pipsi install pew
-- pipsi install pipenv
-- pipenv
+- pipenv install
+- ls $(pipenv --venv)/lib/python3.6/site-packages
 deploy:
 - provider: lambda
   function_name: uno-usage-scraper
