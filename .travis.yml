@@ -4,7 +4,11 @@ cache: pip
 python:
 - 3.6
 script:
-- "./create_deployment_pkg"
+- curl https://raw.githubusercontent.com/mitsuhiko/pipsi/master/get-pipsi.py | python
+- export PATH=$HOME/.local/bin:$PATH
+- pipsi install pew
+- pipsi install pipenv
+- pipenv
 deploy:
 - provider: lambda
   function_name: uno-usage-scraper
