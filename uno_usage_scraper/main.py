@@ -56,7 +56,8 @@ def _timely_execution_check(event: Dict, context) -> None:
             event_time > _UTC_NOW + _EXECUTION_TOLERANCE:
         response = _SNS.publish(
             TopicArn=_NOTIFICATION_TOPIC_ARN,
-            Message='Lambda function executed too early or too late:\n'
+            Message=f'Lambda function {context.function_name} executed too '
+                    'early or too late:\n'
                     f'Request: {context.aws_request_id}\n'
                     f"Event: {event['id']}\n"
                     f'Expected: {event_time}\n'
