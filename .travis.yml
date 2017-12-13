@@ -4,7 +4,7 @@ cache: pip
 python:
 - 3.6
 script:
-- pipenv --bare install
+- pipenv install
 - ./create_deployment_pkg
 deploy:
 - provider: lambda
