@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "84c61d4bbdd4af1c5fc5908f70b162ed0470d48c340f016aa0deadff5119dab7"
+            "sha256": "1b2523f9f25d4b46be3c4ea428cf660ebaea1dbfd6a8e92ee20e4ab5895c9c90"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -29,12 +29,6 @@
         ]
     },
     "default": {
-        "backoff": {
-            "hashes": [
-                "sha256:bc8ef5a3b0cc7e90d56dd4d9d385557ada1a6dbdfcdd2b44038beeabae119038"
-            ],
-            "version": "==1.4.3"
-        },
         "boto3": {
             "hashes": [
                 "sha256:edd35eb7cd8d56f08e65b112206936cf9f76bb406fb15f63075ff72331ef6f5f",
@@ -44,10 +38,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:98f10a24b4de64b6d74cc5dfb5a5d13877df619880992fc649ca7ae0ab745253",
-                "sha256:1c189f4f1b3a834c1679c875912f4d54553ded215e7060812c82494fa4883b5b"
+                "sha256:415f561d58ecfd18b06c158ce00e91400b3475c51af8cd12fad670bd55f581e9",
+                "sha256:740f77e855b06a6061e2a7c5513b943b61758f3ebd483160935473922739c37a"
             ],
-            "version": "==1.8.11"
+            "version": "==1.8.13"
         },
         "certifi": {
             "hashes": [
@@ -92,13 +86,6 @@
                 "sha256:6a81d4c9aa62caf061cb517b4d9ad1dd300374cd4706997aff9cd6aedd61fc64"
             ],
             "version": "==0.9.3"
-        },
-        "pullover": {
-            "hashes": [
-                "sha256:3a3c09d84a4e0572fa2a0611de312a36e4759ed28e3c60e40142a0cedd2f877a",
-                "sha256:ded4b33d8f7383996ed40dba063b79b6a4662ee0512ed11c2bc4dd1273669fb9"
-            ],
-            "version": "==1.1.1"
         },
         "python-dateutil": {
             "hashes": [
