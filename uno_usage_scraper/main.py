@@ -105,8 +105,8 @@ def _insert_samples(samples: Collection[HourUsage], table) -> None:
     with table.batch_writer() as batch:
         start = time.monotonic()
         for sample in samples:
-            logger.info(f'Putting {sample}')
-            # batch.put_item(samples=sample.item)
+            logger.debug(f'Putting {sample}')
+            batch.put_item(samples=sample.item)
     end = time.monotonic()
     seconds = end - start
     logger.info('Inserted %d samples in %.3fs (%.3f/s)',
