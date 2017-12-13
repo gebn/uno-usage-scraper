@@ -4,7 +4,7 @@ cache: pip
 python:
 - 3.6
 script:
-- mkdir -p $HOME/.local/venvs
+- mkdir -p $HOME/.local/venvs/pipsi/bin/pip
 - curl https://raw.githubusercontent.com/mitsuhiko/pipsi/master/get-pipsi.py | python
 - export PATH=$HOME/.local/bin:$PATH
 - pipsi install pew
