@@ -14,7 +14,7 @@ from hour_usage import HourUsage
 from uno import DailyUsageExtractor
 
 
-_VERSION = '1.0.0'
+_VERSION = '1.0.1'
 _EXECUTION_TOLERANCE = datetime.timedelta(minutes=5)
 
 _UTC_NOW = datetime.datetime.now(pytz.utc)
