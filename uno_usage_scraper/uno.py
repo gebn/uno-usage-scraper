@@ -58,7 +58,7 @@ class DailyUsageExtractor:
     """
 
     _DAILY_USAGE_FMT = 'https://my.uno.net.uk/uno/unousagedaily.php?' \
-                       'id={user_id}'
+                       'id={product_id}'
     _ENTRY_REGEX = r'"(\d+)\\n((?:a|p)m)",\W*(\d+(?:.\d+)?)'
 
     def __init__(self, version: str):
@@ -149,11 +149,12 @@ class DailyUsageExtractor:
                                  'do not match up', html)
             yield HourUsage(d_time.astimezone(pytz.utc), u_bytes, d_bytes)
 
-    def extract(self, user_id: int, whmcs_user: str) -> Iterable[HourUsage]:
+    def extract(self, product_id: int, whmcs_user: str) -> Iterable[HourUsage]:
         """
         Retrieve the last 24 hours' usage data for a user.
 
-        :param user_id: The user identifier, e.g. 1799.
+        :param product_id: The unique identifier of the product to measure,
+                           e.g. 1799.
         :param whmcs_user: A valid WHMCSUser cookie for the user.
         :return: 24 HourUsage objects in ascending date order, representing
                  usage during the period.
@@ -161,7 +162,7 @@ class DailyUsageExtractor:
                           message for details.
         """
         response = requests.get(
-            self._DAILY_USAGE_FMT.format(user_id=user_id),
+            self._DAILY_USAGE_FMT.format(product_id=product_id),
             headers={
                 'User-Agent': f'uno-usage-scraper/{self._version}'
             },

@@ -18,7 +18,7 @@ _VERSION = '1.0.0'
 _EXECUTION_TOLERANCE = datetime.timedelta(minutes=5)
 
 _UTC_NOW = datetime.datetime.now(pytz.utc)
-_UNO_USER_ID = int(os.environ['UNO_USER_ID'])
+_UNO_PRODUCT_ID = int(os.environ['UNO_PRODUCT_ID'])
 _UNO_COOKIE = util.kms_decrypt_str(os.environ['UNO_COOKIE'])
 _UNO_COOKIE_EXPIRES = dateutil.parser.parse(os.environ['UNO_COOKIE_EXPIRES'])
 _UNO_COOKIE_WARNINGS = bool(os.getenv('UNO_COOKIE_WARNINGS', True))
@@ -126,7 +126,7 @@ def main() -> None:
     upper = utc_now_hour - datetime.timedelta(hours=11)
 
     extractor = DailyUsageExtractor(_VERSION)
-    samples = extractor.extract(_UNO_USER_ID, _UNO_COOKIE)
+    samples = extractor.extract(_UNO_PRODUCT_ID, _UNO_COOKIE)
     subset = [point for point in samples if lower <= point.dt < upper]
 
     if _UNO_COOKIE_WARNINGS:
