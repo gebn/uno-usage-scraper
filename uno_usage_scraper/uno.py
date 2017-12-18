@@ -14,8 +14,6 @@ _LONDON_NOW = _TZ_LONDON.normalize(_UTC_NOW)
 
 logger = logging.getLogger(__name__)
 
-# TODO documentation
-
 
 class UnoError(Exception):
     """
