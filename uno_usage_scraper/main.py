@@ -143,6 +143,7 @@ def main() -> None:
 def lambda_handler(event, context) -> None:
     """
     AWS Lambda entry point.
+
     :param event: The event that triggered this execution.
     :param context: Current runtime information: http://docs.aws.amazon.com
                     /lambda/latest/dg/python-context-object.html.
