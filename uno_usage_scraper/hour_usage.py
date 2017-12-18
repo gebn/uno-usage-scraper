@@ -82,6 +82,11 @@ class HourUsage:
                          int(item[cls._UPLOADED_BYTES]),
                          int(item[cls._DOWNLOADED_BYTES]))
 
+    def __eq__(self: 'HourUsage', other: 'HourUsage') -> bool:
+        return other.dt == self.dt \
+               and other.up == self.up \
+               and other.down == self.down
+
     def __str__(self: 'HourUsage') -> str:
         return 'HourUsage({0}, Uploaded: {1}, Downloaded: {2})'.format(
             self.dt.isoformat(),
