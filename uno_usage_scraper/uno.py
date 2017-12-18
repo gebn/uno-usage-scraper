@@ -61,13 +61,15 @@ class DailyUsageExtractor:
                        'id={product_id}'
     _ENTRY_REGEX = r'"(\d+)\\n((?:a|p)m)",\W*(\d+(?:.\d+)?)'
 
-    def __init__(self, version: str):
+    def __init__(self, version: str, url: str):
         """
         Initialise a new daily usage extractor.
 
         :param version: The version of this software to report to Uno.
+        :param url: A URL explaining the function of this software.
         """
         self._version = version
+        self._url = url
 
     @staticmethod
     def _parse_entry(match: Tuple[str, str, str]) \
@@ -164,7 +166,8 @@ class DailyUsageExtractor:
         response = requests.get(
             self._DAILY_USAGE_FMT.format(product_id=product_id),
             headers={
-                'User-Agent': f'uno-usage-scraper/{self._version}'
+                'User-Agent': f'uno-usage-scraper/{self._version} '
+                              f'({self._url})'
             },
             cookies={
                 'WHMCSUser': whmcs_user

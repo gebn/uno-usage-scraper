@@ -15,6 +15,7 @@ from uno import DailyUsageExtractor
 
 
 _VERSION = '1.0.1'
+_URL = 'https://github.com/gebn/uno-usage-scraper'
 _EXECUTION_TOLERANCE = datetime.timedelta(minutes=5)
 
 _UTC_NOW = datetime.datetime.now(pytz.utc)
@@ -125,7 +126,7 @@ def main() -> None:
     lower = utc_now_hour - datetime.timedelta(hours=23)
     upper = utc_now_hour - datetime.timedelta(hours=11)
 
-    extractor = DailyUsageExtractor(_VERSION)
+    extractor = DailyUsageExtractor(_VERSION, _URL)
     samples = extractor.extract(_UNO_PRODUCT_ID, _UNO_COOKIE)
     subset = [point for point in samples if lower <= point.dt < upper]
 
