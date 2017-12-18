@@ -14,7 +14,7 @@ from hour_usage import HourUsage
 from uno import DailyUsageExtractor
 
 
-_VERSION = '1.0.1'
+_VERSION = '1.1.0'
 _URL = 'https://github.com/gebn/uno-usage-scraper'
 _EXECUTION_TOLERANCE = datetime.timedelta(minutes=5)
 
