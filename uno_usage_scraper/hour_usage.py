@@ -18,11 +18,11 @@ class HourUsage:
     _DOWNLOADED_BYTES = 'DownloadedBytes'
 
     @property
-    def total(self: 'HourUsage') -> int:
+    def total(self) -> int:
         return self.up + self.down
 
     @property
-    def item(self: 'HourUsage') -> Dict[str, Union[str, int]]:
+    def item(self) -> Dict[str, Union[str, int]]:
         """
         Retrieve the item representation of this sample for use when inserting
         it into DynamoDB. This should be the inverse of parse_item() such that
@@ -36,7 +36,7 @@ class HourUsage:
             self._DOWNLOADED_BYTES: self.down
         }
 
-    def __init__(self: 'HourUsage', dt: datetime.datetime, up: int, down: int):
+    def __init__(self, dt: datetime.datetime, up: int, down: int):
         """
         Initialise a new usage sample.
 
@@ -67,8 +67,7 @@ class HourUsage:
                          int(down))
 
     @classmethod
-    def parse_item(cls: Type['HourUsage'],
-                   item: Dict[str, Union[str, decimal.Decimal]]) \
+    def parse_item(cls, item: Dict[str, Union[str, decimal.Decimal]]) \
             -> 'HourUsage':
         """
         Parse the JSON representation of a sample stored in DynamoDB.
@@ -82,17 +81,17 @@ class HourUsage:
                          int(item[cls._UPLOADED_BYTES]),
                          int(item[cls._DOWNLOADED_BYTES]))
 
-    def __eq__(self: 'HourUsage', other: 'HourUsage') -> bool:
+    def __eq__(self, other: 'HourUsage') -> bool:
         return other.dt == self.dt \
                and other.up == self.up \
                and other.down == self.down
 
-    def __str__(self: 'HourUsage') -> str:
+    def __str__(self) -> str:
         return 'HourUsage({0}, Uploaded: {1}, Downloaded: {2})'.format(
             self.dt.isoformat(),
             util.format_bytes(self.up),
             util.format_bytes(self.down))
 
-    def __repr__(self: 'HourUsage') -> str:
+    def __repr__(self) -> str:
         return '<HourUsage({0},{1},{2})>'.format(repr(self.dt), repr(self.up),
                                                  repr(self.down))
