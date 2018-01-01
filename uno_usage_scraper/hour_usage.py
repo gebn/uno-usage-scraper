@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Dict, Union, Type
+from typing import Dict, Union
 import decimal
 import datetime
 import pytz
