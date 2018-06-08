@@ -20,14 +20,13 @@ _EXECUTION_TOLERANCE = datetime.timedelta(minutes=5)
 
 _UTC_NOW = datetime.datetime.now(pytz.utc)
 _UNO_PRODUCT_ID = int(os.environ['UNO_PRODUCT_ID'])
-_UNO_COOKIE = util.kms_decrypt_str(os.environ['UNO_COOKIE'])
+_UNO_COOKIE = os.environ['UNO_COOKIE']
 _UNO_COOKIE_EXPIRES = dateutil.parser.parse(os.environ['UNO_COOKIE_EXPIRES'])
 _UNO_COOKIE_WARNINGS = bool(os.getenv('UNO_COOKIE_WARNINGS', True))
 _UNO_COOKIE_WARNING_THRESHOLD = datetime.timedelta(weeks=2)
 _NOTIFICATION_TOPIC_ARN = os.environ['NOTIFICATION_TOPIC_ARN']
 _NOTIFICATION_TOPIC_REGION = _NOTIFICATION_TOPIC_ARN.split(':')[3]
-_USAGE_PUSHOVER_APP_TOKEN = util.kms_decrypt_str(
-    os.environ['USAGE_PUSHOVER_APP_TOKEN'])
+_USAGE_PUSHOVER_APP_TOKEN = os.environ['USAGE_PUSHOVER_APP_TOKEN']
 _SEND_USAGE = bool(os.getenv('SEND_USAGE', True))
 _DYNAMO_REGION = os.environ['AWS_REGION']
 _DYNAMO_TABLE = os.environ['DYNAMO_TABLE']
