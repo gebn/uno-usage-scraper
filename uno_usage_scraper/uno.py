@@ -74,7 +74,7 @@ class Session(requests.Session):
             'WHMCSUser': whmcs_user
         })
 
-    def request(self, method, url, **kwargs):
+    def request(self, method: str, url: str, **kwargs) -> requests.Response:
         response = super().request(method, url, **kwargs)
         logger.debug(f'{response}: {response.text}')
         if not response.ok:
