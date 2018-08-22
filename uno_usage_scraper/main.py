@@ -151,3 +151,8 @@ def lambda_handler(event, context) -> None:
     logger.info(f'Event: {event}')
     _timely_execution_check(event, context)
     main()
+
+
+if __name__ == '__main__':
+    logger.debug('Running outside of Lambda')
+    main()
