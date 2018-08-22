@@ -52,6 +52,39 @@ class ParseError(UnoError):
         return f'{self.__class__.__name__}({self.message}, {self.html})'
 
 
+class Session(requests.Session):
+    """
+    Manages interaction with Uno's website. A session is tied to a single
+    user's cookie - to access multiple users' data, use multiple sessions.
+    """
+
+    def __init__(self, whmcs_user: str, version: str, url: str):
+        """
+        Initialise a session that can be used to interact with Uno's website.
+
+        :param whmcs_user: A valid WHMCSUser cookie for the user.
+        :param version: The version of this software to report to Uno.
+        :param url: A URL explaining the function of this software.
+        """
+        super().__init__()
+        self.headers.update({
+            'User-Agent': f'uno-usage-scraper/{version} ({url})'
+        })
+        self.cookies.update({
+            'WHMCSUser': whmcs_user
+        })
+
+    def request(self, method, url, **kwargs):
+        response = super().request(method, url, **kwargs)
+        logger.debug(f'{response}: {response.text}')
+        if not response.ok:
+            raise UnoError(f'Portal returned HTTP {response.status_code}')
+        if '/dologin.php' in response.text:
+            # assumes we never want to see the login page
+            raise UnoError('WHMCSUser cookie invalid')
+        return response
+
+
 class DailyUsageExtractor:
     """
     Retrieves usage for each of the last 24 hours for a user.
@@ -61,15 +94,13 @@ class DailyUsageExtractor:
                        'id={product_id}'
     _ENTRY_REGEX = r'"(\d+)\\n((?:a|p)m)",\W*(\d+(?:.\d+)?)'
 
-    def __init__(self, version: str, url: str):
+    def __init__(self, session: Session):
         """
         Initialise a new daily usage extractor.
 
-        :param version: The version of this software to report to Uno.
-        :param url: A URL explaining the function of this software.
+        :param session: A user session to use to interact with Uno.
         """
-        self._version = version
-        self._url = url
+        self._session = session
 
     @staticmethod
     def _parse_entry(match: Tuple[str, str, str]) \
@@ -151,28 +182,17 @@ class DailyUsageExtractor:
                                  'do not match up', html)
             yield HourUsage(d_time.astimezone(pytz.utc), u_bytes, d_bytes)
 
-    def extract(self, product_id: int, whmcs_user: str) -> Iterable[HourUsage]:
+    def extract(self, product_id: int) -> Iterable[HourUsage]:
         """
         Retrieve the last 24 hours' usage data for a user.
 
         :param product_id: The unique identifier of the product to measure,
                            e.g. 1799.
-        :param whmcs_user: A valid WHMCSUser cookie for the user.
         :return: 24 HourUsage objects in ascending date order, representing
                  usage during the period.
         :raises UnoError: If any error occurred during extraction; check the
                           message for details.
         """
-        response = requests.get(
-            self._DAILY_USAGE_FMT.format(product_id=product_id),
-            headers={
-                'User-Agent': f'uno-usage-scraper/{self._version} '
-                              f'({self._url})'
-            },
-            cookies={
-                'WHMCSUser': whmcs_user
-            })
-        logger.debug(f'{response}: {response.text}')
-        if not response.ok:
-            raise UnoError(f'Portal returned HTTP {response.status_code}')
+        response = self._session.get(
+            self._DAILY_USAGE_FMT.format(product_id=product_id))
         return self._extract_data_points(response.text)

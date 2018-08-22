@@ -11,7 +11,7 @@ import boto3
 
 import util
 from hour_usage import HourUsage
-from uno import DailyUsageExtractor
+from uno import Session, DailyUsageExtractor
 
 
 _VERSION = '1.2.0'
@@ -125,8 +125,9 @@ def main() -> None:
     lower = utc_now_hour - datetime.timedelta(hours=23)
     upper = utc_now_hour - datetime.timedelta(hours=11)
 
-    extractor = DailyUsageExtractor(_VERSION, _URL)
-    samples = extractor.extract(_UNO_PRODUCT_ID, _UNO_COOKIE)
+    session = Session(_UNO_COOKIE, _VERSION, _URL)
+    extractor = DailyUsageExtractor(session)
+    samples = extractor.extract(_UNO_PRODUCT_ID)
     subset = [point for point in samples if lower <= point.dt < upper]
 
     if _UNO_COOKIE_WARNINGS:
