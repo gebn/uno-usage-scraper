@@ -45,7 +45,7 @@ class ParseError(UnoError):
         :param message: A description of the nature of the error.
         :param html: The original page HTML.
         """
-        super(UnoError).__init__(message)
+        super().__init__(message)
         self.html = html
 
     def __str__(self) -> str:
