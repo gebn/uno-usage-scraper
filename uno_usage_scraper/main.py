@@ -34,6 +34,7 @@ _DYNAMO_REGION = os.environ['AWS_REGION']
 _DYNAMO_TABLE = os.environ['DYNAMO_TABLE']
 
 _SNS = boto3.client('sns', region_name=_NOTIFICATION_TOPIC_REGION)
+_DYNAMODB = boto3.resource('dynamodb', region_name=_DYNAMO_REGION)
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -146,8 +147,7 @@ def main() -> None:
     if _SEND_USAGE:
         _usage_summary(subset)
 
-    resource = boto3.resource('dynamodb', region_name=_DYNAMO_REGION)
-    table = resource.Table(_DYNAMO_TABLE)
+    table = _DYNAMODB.Table(_DYNAMO_TABLE)
     _insert_samples(subset, table)
 
 
