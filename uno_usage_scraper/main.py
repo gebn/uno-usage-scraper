@@ -94,11 +94,11 @@ def _usage_summary(samples: Iterable[HourUsage]) -> None:
 
     :param samples: The samples to compute the summary from.
     """
-    samples = [(point.up, point.down) for point in samples]
-    up, down = [sum(metric) for metric in zip(*samples)]
+    samples = [(point.down, point.up) for point in samples]
+    down, up = [sum(metric) for metric in zip(*samples)]
     message = {
         'app': _USAGE_PUSHOVER_APP_TOKEN,
-        'body': f'{util.format_bytes(up)} up, {util.format_bytes(down)} down'
+        'body': f'{util.format_bytes(down)} down, {util.format_bytes(up)} up'
     }
     response = _SNS.publish(
         TopicArn=_NOTIFICATION_TOPIC_ARN,

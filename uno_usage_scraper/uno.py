@@ -181,7 +181,7 @@ class DailyUsageExtractor:
             if d_time != u_time:
                 raise ParseError('Download/upload array data points '
                                  'do not match up', html)
-            yield HourUsage(d_time.astimezone(pytz.utc), u_bytes, d_bytes)
+            yield HourUsage(d_time.astimezone(pytz.utc), d_bytes, u_bytes)
 
     def extract(self, product_id: int) -> Iterable[HourUsage]:
         """

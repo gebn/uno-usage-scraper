@@ -14,12 +14,12 @@ class HourUsage:
     """
 
     _DATE_HOUR = 'DateHour'
-    _UPLOADED_BYTES = 'UploadedBytes'
     _DOWNLOADED_BYTES = 'DownloadedBytes'
+    _UPLOADED_BYTES = 'UploadedBytes'
 
     @property
     def total(self) -> int:
-        return self.up + self.down
+        return self.down + self.up
 
     @property
     def item(self) -> Dict[str, Union[str, int]]:
@@ -32,39 +32,39 @@ class HourUsage:
         """
         return {
             self._DATE_HOUR: f'{self.dt:%Y-%m-%dT%HZ}',
-            self._UPLOADED_BYTES: self.up,
-            self._DOWNLOADED_BYTES: self.down
+            self._DOWNLOADED_BYTES: self.down,
+            self._UPLOADED_BYTES: self.up
         }
 
-    def __init__(self, dt: datetime.datetime, up: int, down: int):
+    def __init__(self, dt: datetime.datetime, down: int, up: int):
         """
         Initialise a new usage sample.
 
         :param dt: The beginning of the hour this usage is for. Any units
                    smaller than hour are ignored.
-        :param up: The amount of data uploaded during the hour in bytes.
         :param down: The amount of data downloaded during the hour in bytes.
+        :param up: The amount of data uploaded during the hour in bytes.
         """
         self.dt = dt.replace(minute=0, second=0, microsecond=0) \
                     .astimezone(pytz.utc)
-        self.up = up
         self.down = down
+        self.up = up
 
     @staticmethod
     def parse_line(line: str) -> 'HourUsage':
         """
         Parse a single line outputted by the legacy script running on lon-1.
 
-        :param line: A line of the form "<ISO8601 datetime>,<uploaded bytes>,
-                     <downloaded bytes>", e.g. "2017-08-30T08:00:00+00:00,
-                     17620000,14650000"
+        :param line: A line of the form "<ISO8601 datetime>,<downloaded bytes>,
+                     <uploaded bytes>", e.g.
+                     "2017-08-30T08:00:00+00:00,14650000,17620000".
         :return: A usage sample representing the line.
         """
-        dt, up, down = line.split(',', 2)
+        dt, down, up = line.split(',', 2)
         return HourUsage(dateutil.parser.parse(dt)
                                  .astimezone(pytz.utc),
-                         int(up),
-                         int(down))
+                         int(down),
+                         int(up))
 
     @classmethod
     def parse_item(cls, item: Dict[str, Union[str, decimal.Decimal]]) \
@@ -78,20 +78,20 @@ class HourUsage:
         return HourUsage(dateutil.parser
                                  .parse(item[cls._DATE_HOUR])
                                  .astimezone(pytz.utc),
-                         int(item[cls._UPLOADED_BYTES]),
-                         int(item[cls._DOWNLOADED_BYTES]))
+                         int(item[cls._DOWNLOADED_BYTES]),
+                         int(item[cls._UPLOADED_BYTES]))
 
     def __eq__(self, other: 'HourUsage') -> bool:
         return other.dt == self.dt \
-               and other.up == self.up \
-               and other.down == self.down
+               and other.down == self.down \
+               and other.up == self.up
 
     def __str__(self) -> str:
-        return 'HourUsage({0}, Uploaded: {1}, Downloaded: {2})'.format(
+        return 'HourUsage({0}, Downloaded: {1}, Uploaded: {2})'.format(
             self.dt.isoformat(),
-            util.format_bytes(self.up),
-            util.format_bytes(self.down))
+            util.format_bytes(self.down),
+            util.format_bytes(self.up))
 
     def __repr__(self) -> str:
-        return '<HourUsage({0},{1},{2})>'.format(repr(self.dt), repr(self.up),
-                                                 repr(self.down))
+        return '<HourUsage({0},{1},{2})>'.format(
+            repr(self.dt), repr(self.down), repr(self.up))
