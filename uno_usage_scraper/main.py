@@ -2,6 +2,7 @@
 from typing import Iterable, Collection, Dict
 import logging
 import os
+import sys
 import json
 import time
 import datetime
@@ -164,5 +165,6 @@ def lambda_handler(event, context) -> None:
 
 
 if __name__ == '__main__':
+    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     logger.debug('Running outside of Lambda')
     main()
