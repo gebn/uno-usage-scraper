@@ -90,7 +90,7 @@ class DailyUsageExtractor:
     Retrieves usage for each of the last 24 hours for a user.
     """
 
-    _DAILY_USAGE_FMT = 'https://my.uno.net.uk/uno/unousagedaily.php?' \
+    _DAILY_USAGE_FMT = 'https://my.uno.uk/uno/unousagedaily.php?' \
                        'id={product_id}'
     _ENTRY_REGEX = r'"(\d+)\\n((?:a|p)m)",\W*(\d+(?:.\d+)?)'
 
