@@ -156,11 +156,11 @@ class DailyUsageExtractor:
         """
         value_match = re.search(r'var {0} = (.+);'.format(name), html)
         if value_match is None:
-            raise ParseError(f'Could not find variable {name}', html)
+            raise ParseError(f'Could not find variable `{name}`', html)
         value_points = re.findall(cls._ENTRY_REGEX, value_match.group(1))
         if not value_points:
-            raise ParseError(f'Could not extract any usage samples from '
-                             f'variable {name}', html)
+            raise ParseError('Could not extract any usage samples from '
+                             f'variable `{name}`', html)
         return value_points
 
     @classmethod
