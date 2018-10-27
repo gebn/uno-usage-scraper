@@ -41,12 +41,11 @@ class HourUsage:
         Initialise a new usage sample.
 
         :param dt: The beginning of the hour this usage is for. Any units
-                   smaller than hour are ignored.
+                   smaller than hour are ignored. Should be timezone-aware.
         :param down: The amount of data downloaded during the hour in bytes.
         :param up: The amount of data uploaded during the hour in bytes.
         """
-        self.dt = dt.replace(minute=0, second=0, microsecond=0) \
-                    .astimezone(pytz.utc)
+        self.dt = dt.replace(minute=0, second=0, microsecond=0)
         self.down = down
         self.up = up
 
@@ -74,12 +73,18 @@ class HourUsage:
 
         :param item: The item JSON to parse.
         :return: A usage sample representing the item.
+        :raises ValueError: If the item is missing a field or malformed.
         """
-        return HourUsage(dateutil.parser
-                                 .parse(item[cls._DATE_HOUR])
-                                 .astimezone(pytz.utc),
-                         int(item[cls._DOWNLOADED_BYTES]),
-                         int(item[cls._UPLOADED_BYTES]))
+        try:
+            return HourUsage(dateutil.parser
+                                     .parse(item[cls._DATE_HOUR])
+                                     .astimezone(pytz.utc),
+                             int(item[cls._DOWNLOADED_BYTES]),
+                             int(item[cls._UPLOADED_BYTES]))
+        except KeyError as e:
+            raise ValueError('Missing key') from e
+        except TypeError:
+            raise ValueError('The DateHour must be a string')
 
     def __eq__(self, other: 'HourUsage') -> bool:
         return other.dt == self.dt \
