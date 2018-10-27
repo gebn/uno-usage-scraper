@@ -58,17 +58,18 @@ class Session(requests.Session):
     user's cookie - to access multiple users' data, use multiple sessions.
     """
 
-    def __init__(self, whmcs_user: str, version: str, url: str):
+    def __init__(self, product: str, version: str, url: str, whmcs_user: str):
         """
         Initialise a session that can be used to interact with Uno's website.
 
-        :param whmcs_user: A valid WHMCSUser cookie for the user.
+        :param product: The name of the requesting piece of software.
         :param version: The version of this software to report to Uno.
         :param url: A URL explaining the function of this software.
+        :param whmcs_user: A valid WHMCSUser cookie for the user.
         """
         super().__init__()
         self.headers.update({
-            'User-Agent': f'uno-usage-scraper/{version} ({url})'
+            'User-Agent': f'{product}/{version} ({url})'
         })
         self.cookies.update({
             'WHMCSUser': whmcs_user

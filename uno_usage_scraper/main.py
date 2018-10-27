@@ -14,8 +14,9 @@ from hour_usage import HourUsage
 from uno import Session, DailyUsageExtractor
 
 
+_NAME = 'uno-usage-scraper'
 _VERSION = '1.2.0'
-_URL = 'https://github.com/gebn/uno-usage-scraper'
+_URL = f'https://github.com/gebn/{_NAME}'
 _EXECUTION_TOLERANCE = datetime.timedelta(minutes=5)
 
 _UTC_NOW = datetime.datetime.now(pytz.utc)
@@ -54,14 +55,18 @@ def _timely_execution_check(event: Dict, context) -> None:
     event_time = dateutil.parser.parse(event['time'])
     if event_time < _UTC_NOW - _EXECUTION_TOLERANCE or \
             event_time > _UTC_NOW + _EXECUTION_TOLERANCE:
-        response = _SNS.publish(
-            TopicArn=_NOTIFICATION_TOPIC_ARN,
-            Message=f'Lambda function {context.function_name} executed too '
+        message = {
+            'body': f'Lambda function {context.function_name} executed too '
                     'early or too late:\n'
                     f'Request: {context.aws_request_id}\n'
                     f"Event: {event['id']}\n"
                     f'Expected: {event_time}\n'
-                    f'Actual: {_UTC_NOW}')
+                    f'Actual: {_UTC_NOW}',
+            'priority': 1  # high
+        }
+        response = _SNS.publish(
+            TopicArn=_NOTIFICATION_TOPIC_ARN,
+            Message=json.dumps(message, ensure_ascii=False))
         logger.info(f"Published time warning: {response['MessageId']}")
 
 
@@ -72,9 +77,13 @@ def _cookie_expiry_check() -> None:
     """
     validity_remaining = _UNO_COOKIE_EXPIRES - _UTC_NOW
     if validity_remaining < _UNO_COOKIE_WARNING_THRESHOLD:
+        message = {
+            'body': f'{_NAME} cookie will expire in {validity_remaining}',
+            'priority': 1  # high
+        }
         response = _SNS.publish(
             TopicArn=_NOTIFICATION_TOPIC_ARN,
-            Message=f'Uno cookie will expire in {validity_remaining}')
+            Message=json.dumps(message, ensure_ascii=False))
         logger.info(f"Published cookie warning: {response['MessageId']}")
 
 
@@ -125,7 +134,7 @@ def main() -> None:
     lower = utc_now_hour - datetime.timedelta(hours=23)
     upper = utc_now_hour - datetime.timedelta(hours=11)
 
-    session = Session(_UNO_COOKIE, _VERSION, _URL)
+    session = Session(_NAME, _VERSION, _URL, _UNO_COOKIE)
     extractor = DailyUsageExtractor(session)
     samples = extractor.extract(_UNO_PRODUCT_ID)
     subset = [point for point in samples if lower <= point.dt < upper]
