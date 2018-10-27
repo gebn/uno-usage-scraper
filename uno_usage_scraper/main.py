@@ -16,7 +16,7 @@ from uno import Session, DailyUsageExtractor
 
 
 _NAME = 'uno-usage-scraper'
-_VERSION = '1.2.0'
+_VERSION = 'unreleased'
 _URL = f'https://github.com/gebn/{_NAME}'
 _EXECUTION_TOLERANCE = datetime.timedelta(minutes=5)
 

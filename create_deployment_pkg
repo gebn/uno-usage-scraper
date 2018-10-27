@@ -13,6 +13,9 @@ if [[ -d $OUTPUT_DIR ]]; then
     exit 1
 fi
 
+version=$(git describe)
+sed -i -e "s/_VERSION = 'unreleased'/_VERSION = '${version:1}'/" uno_usage_scraper/main.py
+
 mkdir "$OUTPUT_DIR"
 rsync -a "$DEPENDENCIES/" "$OUTPUT_DIR"
 rsync -a uno_usage_scraper/ "$OUTPUT_DIR"
