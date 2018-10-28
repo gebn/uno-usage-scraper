@@ -127,8 +127,7 @@ def _insert_samples(samples: Collection[HourUsage], table) -> None:
 
 def main() -> None:
     """
-    Executes the main bulk of this function. Here for manual execution outside
-    of Lambda.
+    Executes the main bulk of this function.
 
     :raises UnoError: If any error occurs during execution.
     """
